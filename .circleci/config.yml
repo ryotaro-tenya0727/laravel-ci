@@ -3,6 +3,28 @@ jobs:
   build:
     docker:
       - image: circleci/php:7.3-node-browsers
+      - image: circleci/postgres:11.6-alpine
+        environment:
+          #postgresの設定
+          POSTGRES_DB: larasns
+          POSTGRES_USER: default
+          POSTGRES_PASSWORD: secret
+    #laravel のdatabase.phpに適用
+    environment:
+      #laravel の環境変数を設定、build全体に適用
+      #APP_ENV はテスト、本番のような環境設定
+      APP_ENV: testing
+      #laravel-ci/phpunit.xmlのDB_CONNECTIONをsqlite
+      #からpgsql に設定
+      DB_CONNECTION: pgsql
+      DB_HOST: localhost
+      #circleci/postgres:11.6-alpine はDockerfile
+      #が EXPOSE 5432
+      #localhost:5432 とコンテナの5432がつながる
+      DB_PORT: 5432
+      DB_DATABASE: larasns
+      DB_USERNAME: default
+      DB_PASSWORD: secret
     steps:
       - checkout
       - run: sudo composer self-update --1
@@ -29,6 +51,13 @@ jobs:
           paths:
             - node_modules
       - run: npm run dev
+      - run:
+          name: get ready for postgres
+          command: |
+            sudo apt-get update
+            sudo apt-get install libpq-dev
+            sudo docker-php-ext-install pdo_pgsql
+            dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: php test
           command: vendor/bin/phpunit
