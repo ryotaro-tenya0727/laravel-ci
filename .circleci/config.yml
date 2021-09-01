@@ -9,6 +9,7 @@ jobs:
       - restore_cache:
           #composer.lock のハッシュ値を　keyに含め、composer-v1 として保存(ハッシュ値とcomposer-v1を紐付け)。保存するディレクトリはvendor。
           #composer.lock が変化すれば保存し直す。
+          #ハッシュ値が同じであれば、このvendorが使えるよ〜みたいな感じ
           key: composer-v1-{{ checksum "composer.lock" }}
       - run: composer install -n --prefer-dist
       - save_cache:
