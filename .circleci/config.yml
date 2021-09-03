@@ -25,6 +25,7 @@ jobs:
       #docker-compose.ymlの5432:5432はPCとコンテナを繋ぐ設定である
       #コンテナ同士であればDB_portと接続先のコンテナのポートが同じであれば良い
       #こうすれば、localhost:5432で接続できる。
+
       DB_PORT: 5432
       DB_DATABASE: larasns
       DB_USERNAME: default
