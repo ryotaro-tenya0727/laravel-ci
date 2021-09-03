@@ -2,6 +2,7 @@ version: 2.1
 jobs:
   build:
     docker:
+      #以降のコマンドは一つ目のイメージをベースに実行
       - image: circleci/php:7.3-node-browsers
       - image: circleci/postgres:11.6-alpine
         environment:
@@ -20,7 +21,11 @@ jobs:
       DB_HOST: localhost
       #circleci/postgres:11.6-alpine はDockerfile
       #が EXPOSE 5432
-      #localhost:5432 とコンテナの5432がつながる
+      #localhost:5432 でpostgresにつながる
+      #docker-compose.ymlの5432:5432はPCとコンテナを繋ぐ設定である
+      #コンテナ同士であればDB_portと接続先のコンテナのポートが同じであれば良い
+      #こうすれば、localhost:5432で接続できる。
+
       DB_PORT: 5432
       DB_DATABASE: larasns
       DB_USERNAME: default
