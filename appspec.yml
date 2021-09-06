@@ -1,6 +1,7 @@
 version: 0.0
 os: linux
 files:
+  #zip になりS3に格納された後に起動
   - source: /
     destination: /home/webapp/laravel-ci
 
