@@ -32,8 +32,6 @@ jobs:
       DB_PASSWORD: secret
     steps:
       - checkout
-      - run: pwd
-      - run: ls
       - run: sudo composer self-update --1
       - restore_cache:
           #composer.lock のハッシュ値を　keyに含め、composer-v1 として保存(ハッシュ値とcomposer-v1を紐付け)。
